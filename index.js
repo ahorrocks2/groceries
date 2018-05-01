@@ -1,7 +1,25 @@
 #!/usr/bin/env node
 
 const program = require('commander');
-const argv = require('yargs').argv;
+const inquirer = require('inquirer');
+
+const itemQuestions = [
+  {
+    type: 'input',
+    name: 'unitOfMeasure',
+    message: `How do you measure that?`,
+  },
+  {
+    type: 'input',
+    name: 'quantity',
+    message: `What quantity would you like to add to the store?`
+  },
+  {
+    type: 'input',
+    name: 'price',
+    message: 'How much does one sell for?'
+  }
+];
 
 let store = [];
 
@@ -10,18 +28,19 @@ program
   .description('Groceries are fun');
 
 program
-  .command('test')
-  .action(() => {
-    console.log('test');
-  });
-
-program
   .command('add <itemName>')
-  .description('Add a product to your store')
+  .description('Add a named product to your store.')
   .action((itemName) => {
-    const newItem = { itemName };
-    store.push(newItem);
-    console.log(store);
+    inquirer.prompt(itemQuestions).then(answers => {
+      let newItem = {
+        name: itemName,
+        unitOfMeasure: answers.unitOfMeasure,
+        quantity: answers.quantity,
+        price: answers.price
+      }
+      
+      store.push(newItem);
+    });
   });
 
 program.parse(process.argv)
