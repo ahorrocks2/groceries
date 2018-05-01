@@ -9,7 +9,10 @@
   "license": "ISC",
   "dependencies": {
     "commander": "~2.15.1",
-    "inquirer": "~5.2.0"
+    "dotenv": "^5.0.1",
+    "inquirer": "~5.2.0",
+    "request": "~2.85.0",
+    "request-promise": "~4.2.2"
   },
   "preferGlobal": true,
   "bin": "./index.js"
