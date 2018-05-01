@@ -1,5 +1,6 @@
 {
   "name": "groceries",
+  "version": "1.0.0",
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js"
@@ -7,7 +8,9 @@
   "author": "alyssa horrocks",
   "license": "ISC",
   "dependencies": {
-    "commander": "^2.15.1",
-    "yargs": "^11.0.0"
-  }
+    "commander": "~2.15.1",
+    "yargs": "~11.0.0"
+  },
+  "preferGlobal": true,
+  "bin": "./index.js"
 }
