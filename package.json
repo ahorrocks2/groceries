@@ -7,5 +7,6 @@
   "author": "alyssa horrocks",
   "license": "ISC",
   "dependencies": {
+    "yargs": "^11.0.0"
   }
 }
