@@ -1,0 +1,11 @@
+{
+  "name": "groceries",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js"
+  },
+  "author": "alyssa horrocks",
+  "license": "ISC",
+  "dependencies": {
+  }
+}
