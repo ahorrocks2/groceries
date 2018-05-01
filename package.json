@@ -7,6 +7,7 @@
   "author": "alyssa horrocks",
   "license": "ISC",
   "dependencies": {
+    "commander": "^2.15.1",
     "yargs": "^11.0.0"
   }
 }
