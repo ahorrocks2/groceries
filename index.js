@@ -28,7 +28,7 @@ program
 
 program 
   .command('items [direction]')
-  .description('Check what items have been added to your cart.')
+  .description('Check what items have been added to your cart with an optional sorting direction.')
   .option('-n, --name', 'Optionl: sort cart items by name')
   .option('-s, --subtotal', 'Optional: sort cart items by subtotal')
   .parse(process.argv)
@@ -49,4 +49,17 @@ program
     });
   });
 
+program 
+  .command('empty')
+  .description('Empty your cart.')
+  .action(() => {
+    inquirer.prompt({
+      type: 'list',
+      name: 'confirm',
+      message: 'Are you sure you want to empty your cart? You will loose all your items.',
+      choices: ['no', 'yes']
+    }).then(result => {
+      result.confirm === 'yes' ? clearItems() : null;
+    });
+  })
 program.parse(process.argv);

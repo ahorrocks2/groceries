@@ -1,11 +1,12 @@
 const rp = require('request-promise');
 require('dotenv').config()
+const uri = `https://api.mlab.com/api/1/databases/groceries-amh/collections/cart?apiKey=${process.env.apiKey}`;
 
 const addItem = async (item) => {
   try {
-    const results = await rp({
+    await rp({
       method: 'POST',
-      uri: `https://api.mlab.com/api/1/databases/groceries-amh/collections/cart?apiKey=cyfgCVnWh1Aw7-6DOqvIgogYsemiiyWg`,
+      uri: uri,
       headers: {
         'content-type': "application/json"
       },
@@ -23,7 +24,7 @@ const getItems = async () => {
   try {
     const results = await rp({
       method: 'GET',
-      uri: `https://api.mlab.com/api/1/databases/groceries-amh/collections/cart?apiKey=${process.env.apiKey}`,
+      uri: uri,
       headers: {
         'content-type': "application/json"
       },
@@ -36,4 +37,22 @@ const getItems = async () => {
   }
 };
 
-module.exports = { addItem, getItems };
+const clearItems = async () => {
+  try {
+    await rp({
+      method: 'PUT',
+      uri: uri,
+      headers: {
+        'content-type': "application/json"
+      },
+      json: true,
+      body: []
+    });
+
+    console.log('Cart emptied!');
+  } catch(error) {
+    console.error("Error: ", error);
+  }
+};
+
+module.exports = { addItem, getItems, clearItems };
