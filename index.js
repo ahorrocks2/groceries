@@ -2,25 +2,8 @@
 
 const program = require('commander');
 const inquirer = require('inquirer');
-const { addItem, getItems } = require('./persistence.js');
-
-const itemQuestions = [
-  {
-    type: 'input',
-    name: 'unitOfMeasure',
-    message: `How do you measure that?`,
-  },
-  {
-    type: 'input',
-    name: 'quantity',
-    message: `What quantity would you like to add to the cart?`
-  },
-  {
-    type: 'input',
-    name: 'price',
-    message: 'How much does one cost?'
-  }
-];
+const { addItem, getItems, clearItems } = require('./persistence.js');
+const itemQuestions = require('./itemQuestions.js');
 
 program
   .version('0.0.1')
