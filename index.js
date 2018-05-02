@@ -44,13 +44,26 @@ program
   });
 
 program 
-  .command('items')
+  .command('items [direction]')
   .description('Check what items have been added to your cart.')
-  .action(() => {
+  .option('-n, --name', 'Optionl: sort cart items by name')
+  .option('-s, --subtotal', 'Optional: sort cart items by subtotal')
+  .parse(process.argv)
+  .action((direction, options) => {
     getItems().then(items => {
-      console.log(items.length ? items : "Nothing yet!");
+      options.name === true ? items.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1) : 
+        options.subtotal === true ? items.sort((a, b) => a.subTotal - b.subTotal) : 
+          null;
+
+      if(direction === 'desc') items.reverse();
+
+      if(items.length) {
+        console.log(items.map(i => { return { name: i.name, quantity: `${i.quantity} ${i.unitOfMeasure}`, subtotal: `$${i.subTotal}` }}));
+        console.log(`Cart total: $${items.map(x => x.subTotal).reduce((acc, curr) => acc + curr)}`);
+      } else {
+        console.log('Nothing in your cart yet!')
+      }
     });
   });
 
-program.parse(process.argv)
-
+program.parse(process.argv);
