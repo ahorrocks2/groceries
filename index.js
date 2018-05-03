@@ -11,27 +11,35 @@ program
 
 program
   .command('add <itemName>')
-  .description('Add a named product to your cart.')
+  .description('Add an item to your cart.')
   .action((itemName) => {
     inquirer.prompt(itemQuestions).then(answers => {
       const newItem = {
         name: itemName,
         unitOfMeasure: answers.unitOfMeasure,
         quantity: answers.quantity,
-        price: answers.price,
-        subTotal: answers.quantity * answers.price
+        price: (+answers.price).toFixed(2),
+        subTotal: (+answers.quantity * answers.price).toFixed(2)
       }
       
       addItem(newItem);
+    }).catch(err => {
+      console.log(err);
     });
+  });
+
+program
+  .command('remove <itemName>')
+  .description('Remove an item from your cart.')
+  .action((itemName) => {
+    removeItem(itemName);
   });
 
 program 
   .command('items [direction]')
-  .description('Check what items have been added to your cart with an optional sorting direction.')
+  .description(`List the item(s) in your cart with an optional sorting direction 'asc' or 'desc'.`)
   .option('-n, --name', 'Optionl: sort cart items by name')
   .option('-s, --subtotal', 'Optional: sort cart items by subtotal')
-  .parse(process.argv)
   .action((direction, options) => {
     getItems().then(items => {
       options.name === true ? items.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1) : 
@@ -41,11 +49,13 @@ program
       if(direction === 'desc') items.reverse();
 
       if(items.length) {
-        console.log(items.map(i => { return { name: i.name, quantity: `${i.quantity} ${i.unitOfMeasure}`, subtotal: `$${i.subTotal}` }}));
-        console.log(`Cart total: $${items.map(x => x.subTotal).reduce((acc, curr) => acc + curr)}`);
+        console.log(items.map(i => { return { name: i.name, quantity: `${i.quantity} ${i.unitOfMeasure}`, price: `$${i.price}`, subtotal: `$${i.subTotal}` }}));
+        console.log(`Cart total: $${items.map(x => +x.subTotal).reduce((acc, curr) => acc + curr)}`);
       } else {
         console.log('Nothing in your cart yet!')
       }
+    }).catch(err => {
+      console.log(err);
     });
   });
 
@@ -60,14 +70,9 @@ program
       choices: ['no', 'yes']
     }).then(result => {
       result.confirm === 'yes' ? clearItems() : null;
+    }).catch(err => {
+      console.log(err);
     });
-  });
-
-program
-  .command('remove <itemName>')
-  .description('Remove an item from your cart.')
-  .action((itemName) => {
-    removeItem(itemName);
   });
 
 program.parse(process.argv);
