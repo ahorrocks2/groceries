@@ -1,22 +1,22 @@
 const rp = require('request-promise');
 require('dotenv').config()
+
 const uri = `https://api.mlab.com/api/1/databases/groceries-amh/collections/cart?apiKey=${process.env.apiKey}`;
+const headers = { 'content-type': "application/json" };
 
 const addItem = async (item) => {
   try {
     await rp({
       method: 'POST',
       uri: uri,
-      headers: {
-        'content-type': "application/json"
-      },
+      headers: headers,
       body: item,
       json: true
     });
 
-    console.log("Item added to the cart!");
+    console.log('Item added to the cart!');
   } catch(error) {
-    console.error("Error: ", error);
+    console.error('Error: ', error.message);
   }
 };
 
@@ -25,15 +25,13 @@ const getItems = async () => {
     const results = await rp({
       method: 'GET',
       uri: uri,
-      headers: {
-        'content-type': "application/json"
-      },
+      headers: headers,
       json: true
     });
 
     return results;
   } catch(error) {
-    console.error("Error: ", error);
+    console.error('Error: ', error.message);
   }
 };
 
@@ -42,17 +40,40 @@ const clearItems = async () => {
     await rp({
       method: 'PUT',
       uri: uri,
-      headers: {
-        'content-type': "application/json"
-      },
+      headers: headers,
       json: true,
       body: []
     });
 
     console.log('Cart emptied!');
   } catch(error) {
-    console.error("Error: ", error);
+    console.error('Error: ', error.message);
   }
 };
 
-module.exports = { addItem, getItems, clearItems };
+const removeItem = async (itemName) => {
+  try {
+    const items = await getItems();
+    const item = items.find(i => i.name.toLowerCase() === itemName.toLowerCase());
+    
+    if(!item) {
+      const itemNames = items.map(i => i.name);
+      throw new Error(`Looks like that item isn't in your cart! Here's what is, try double checking your spelling: ${itemNames}`);
+    }
+
+    const itemId = item._id.$oid;
+
+    await rp({
+      method: 'DELETE',
+      uri: `https://api.mlab.com/api/1/databases/groceries-amh/collections/cart/${itemId}?apiKey=${process.env.apiKey}`,
+      headers: headers,
+      json: true
+    });
+    
+    console.log('Item successfully removed.');
+  } catch (error) {
+    console.error('Error: ', error.message);
+  }
+}
+
+module.exports = { addItem, getItems, clearItems, removeItem };

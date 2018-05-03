@@ -2,7 +2,7 @@
 
 const program = require('commander');
 const inquirer = require('inquirer');
-const { addItem, getItems, clearItems } = require('./persistence.js');
+const { addItem, getItems, clearItems, removeItem } = require('./persistence.js');
 const itemQuestions = require('./itemQuestions.js');
 
 program
@@ -61,5 +61,13 @@ program
     }).then(result => {
       result.confirm === 'yes' ? clearItems() : null;
     });
-  })
+  });
+
+program
+  .command('remove <itemName>')
+  .description('Remove an item from your cart.')
+  .action((itemName) => {
+    removeItem(itemName);
+  });
+
 program.parse(process.argv);
