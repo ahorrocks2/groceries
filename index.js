@@ -41,9 +41,9 @@ program
 
 program 
   .command('items [direction]')
-  .description(`List the item(s) in your cart with an optional sorting direction 'asc' or 'desc'`)
   .option('-n, --name', 'Optionl: sort cart items by name')
   .option('-s, --subtotal', 'Optional: sort cart items by subtotal')
+  .description(`List the item(s) in your cart with optional sorting by name (-n) or subtotal (-s) and direction ascending (asc) or descending (desc)`)
   .action((direction, options) => {
     getItems().then(items => {
       if(items.length) {
