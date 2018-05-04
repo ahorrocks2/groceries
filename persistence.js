@@ -55,18 +55,8 @@ const clearItems = async () => {
   }
 };
 
-const removeItem = async (itemName) => {
+const removeItem = async (itemId) => {
   try {
-    const items = await getItems();
-    const item = items.find(i => i.name.toLowerCase() === itemName.toLowerCase());
-    
-    if(!item) {
-      const itemNames = items.map(i => i.name);
-      throw new Error(`Looks like that item isn't in your cart! Here's what is, try double checking your spelling: ${itemNames}`);
-    }
-
-    const itemId = item._id.$oid;
-
     await rp({
       method: 'DELETE',
       uri: `https://api.mlab.com/api/1/databases/groceries-amh/collections/cart/${itemId}?apiKey=${process.env.apiKey}`,
