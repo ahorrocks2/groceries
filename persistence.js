@@ -1,4 +1,5 @@
 const rp = require('request-promise');
+const chalk = require('chalk');
 require('dotenv').config()
 
 const uri = `https://api.mlab.com/api/1/databases/groceries-amh/collections/cart?apiKey=${process.env.apiKey}`;
@@ -14,9 +15,9 @@ const addItem = async (item) => {
       json: true
     });
 
-    console.log('Item added to the cart!');
+    console.log(chalk.green('Item added to the cart!'));
   } catch(error) {
-    console.error('Error: ', error.message);
+    console.error(chalk.red('Error: ', error.message));
   }
 };
 
@@ -31,7 +32,7 @@ const getItems = async () => {
 
     return results;
   } catch(error) {
-    console.error('Error: ', error.message);
+    console.error(chalk.red('Error: ', error.message));
   }
 };
 
@@ -45,9 +46,9 @@ const clearItems = async () => {
       body: []
     });
 
-    console.log('Cart emptied!');
+    console.log(chalk.green('Cart emptied!'));
   } catch(error) {
-    console.error('Error: ', error.message);
+    console.error(chalk.red('Error: ', error.message));
   }
 };
 
@@ -70,9 +71,9 @@ const removeItem = async (itemName) => {
       json: true
     });
     
-    console.log('Item successfully removed.');
+    console.log(chalk.green('Item successfully removed.'));
   } catch (error) {
-    console.error('Error: ', error.message);
+    console.error(chalk.red('Error: ', error.message));
   }
 }
 

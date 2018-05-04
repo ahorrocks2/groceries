@@ -2,12 +2,14 @@
 
 const program = require('commander');
 const inquirer = require('inquirer');
+const chalk = require('chalk');
+
 const { addItem, getItems, clearItems, removeItem } = require('./persistence.js');
 const itemQuestions = require('./itemQuestions.js');
 
 program
   .version('0.0.1')
-  .description('Welcome to your cart - Use the commands below to start shopping.');
+  .description(chalk.blueBright('Welcome to your cart - Use the commands below to start shopping.'));
 
 program
   .command('add <itemName>')
@@ -24,7 +26,7 @@ program
       
       addItem(newItem);
     }).catch(err => {
-      console.log(err);
+      console.log(chalk.red(err));
     });
   });
 
@@ -47,15 +49,14 @@ program
           null;
 
       if(direction === 'desc') items.reverse();
-
       if(items.length) {
         console.log(items.map(i => { return { name: i.name, quantity: `${i.quantity} ${i.unitOfMeasure}`, price: `$${i.price}`, subtotal: `$${i.subTotal}` }}));
-        console.log(`Cart total: $${items.map(x => +x.subTotal).reduce((acc, curr) => acc + curr)}`);
+        console.log(chalk.green(`Cart total: $${items.map(x => +x.subTotal).reduce((acc, curr) => acc + curr)}`));
       } else {
-        console.log('Nothing in your cart yet!')
+        console.log(chalk.cyan('Nothing in your cart yet!'));
       }
     }).catch(err => {
-      console.log(err);
+      console.log(chalk.red(err));
     });
   });
 
@@ -71,7 +72,7 @@ program
     }).then(result => {
       result.confirm === 'yes' ? clearItems() : null;
     }).catch(err => {
-      console.log(err);
+      console.log(chalk.red(err));
     });
   });
 
