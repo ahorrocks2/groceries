@@ -5,6 +5,9 @@ require('dotenv').config()
 const uri = `https://api.mlab.com/api/1/databases/groceries-amh/collections/cart?apiKey=${process.env.apiKey}`;
 const headers = { 'content-type': "application/json" };
 
+const showErr = error => console.error(chalk.red('Error: ', error.message));
+const showSuccess = msg => console.log(chalk.green('Success: ', msg));
+
 const addItem = async (item) => {
   try {
     await rp({
@@ -15,9 +18,9 @@ const addItem = async (item) => {
       json: true
     });
 
-    console.log(chalk.green('Item added to the cart!'));
+    showSuccess('Item added!');
   } catch(error) {
-    console.error(chalk.red('Error: ', error.message));
+    showErr(error);
   }
 };
 
@@ -32,7 +35,7 @@ const getItems = async () => {
 
     return results;
   } catch(error) {
-    console.error(chalk.red('Error: ', error.message));
+    showErr(error);
   }
 };
 
@@ -46,9 +49,9 @@ const clearItems = async () => {
       body: []
     });
 
-    console.log(chalk.green('Cart emptied!'));
+    showSuccess('Items removed!');
   } catch(error) {
-    console.error(chalk.red('Error: ', error.message));
+    showErr(error);
   }
 };
 
@@ -71,9 +74,9 @@ const removeItem = async (itemName) => {
       json: true
     });
     
-    console.log(chalk.green('Item successfully removed.'));
+    showSuccess('Item removed!');
   } catch (error) {
-    console.error(chalk.red('Error: ', error.message));
+    showErr(error);
   }
 }
 
