@@ -5,7 +5,7 @@ const { addItem, getItems, clearItems, removeItem } = require('./persistence.js'
 const itemQuestions = require('./helpers/itemQuestions.js');
 const { sortItems } = require('./helpers/helper.js');
 
-const error = err => console.log(chalk.red(err));
+const error = err => console.log(chalk.red(err.message));
 
 const displayCommands = () => {
   console.log(chalk.blueBright('Welcome to your cart - Use the commands below to start shopping'));
