@@ -3,8 +3,25 @@ const chalk = require('chalk');
 
 const { addItem, getItems, clearItems, removeItem } = require('./persistence.js');
 const itemQuestions = require('./helpers/itemQuestions.js');
+const { sortItems } = require('./helpers/helper.js');
 
 const error = err => console.log(chalk.red(err));
+
+const displayCommands = () => {
+  console.log(chalk.blueBright('Welcome to your cart - Use the commands below to start shopping'));
+
+  const commands = [
+    ['add', '<itemName>', 'Add an item to your cart.'],
+    ['remove', '<itemName>', 'Remove an item from your cart.'],
+    ['items', '-n [direction]', 'List and sort items by name, optional asc (default) or desc'],
+    ['items', '-s [direction]', 'List and sort items by subtotal, optional asc (default) or desc'],
+    ['empty', '', 'Remove all items from your cart.']
+  ];
+
+  commands.forEach(c => {
+    console.log(chalk.magenta(c[0]), chalk.yellow(`  ${c[1]}`), c[2]);
+  });
+};
 
 const addItemToCart = itemName => {
   inquirer.prompt(itemQuestions).then(answers => {
@@ -26,9 +43,7 @@ const addItemToCart = itemName => {
 const getAndSortItems = (direction, options) => {
   getItems().then(items => {
     if(items.length) {
-      options.name === true ? items.sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1) : 
-        options.subtotal === true ? items.sort((a, b) => a.subTotal - b.subTotal) : 
-          null;
+      sortItems(items, options);
 
       if(direction === 'desc') items.reverse();
       
@@ -73,4 +88,4 @@ const removeItemFromCart = itemName => {
   });
 };
 
-module.exports = { addItemToCart, removeItemFromCart, emptyCart, getAndSortItems };
+module.exports = { addItemToCart, removeItemFromCart, emptyCart, getAndSortItems, displayCommands };

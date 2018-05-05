@@ -7,7 +7,7 @@ After cloning the repository:
 - Install dependencies `npm install`
 - Create a  symlink `npm link`
 - Add a `.env` file in the root directory and add the APIKey provided by me 
-- Run `grocerycart --help` for more information on available commands:
+- Run `grocerycart help` for more information on available commands:
   - add [item name]
   - remove [item name]
   - items [--name or --subtotal] [asc or desc]
