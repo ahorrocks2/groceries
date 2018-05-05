@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node ./index.js"
+    "start": "node ./index.js",
+    "test": "mocha"
   },
   "author": "alyssa horrocks",
   "license": "ISC",
@@ -16,5 +17,8 @@
     "request-promise": "~4.2.2"
   },
   "preferGlobal": true,
-  "bin": "./index.js"
+  "bin": "./index.js",
+  "devDependencies": {
+    "mocha": "^5.1.1"
+  }
 }
