@@ -19,7 +19,7 @@ const displayCommands = () => {
   ];
 
   commands.forEach(c => {
-    console.log(chalk.magenta(c[0]), chalk.yellow(`  ${c[1]}`), c[2]);
+    console.log(chalk.cyan('grocerycart'), chalk.magenta( c[0]), chalk.yellow(` ${c[1]}`), c[2]);
   });
 };
 
